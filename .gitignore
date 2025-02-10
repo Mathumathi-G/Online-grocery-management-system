@@ -5,15 +5,11 @@
 /frontend/.pnp
 /frontend/.pnp.js
 node_modules
-/backend/.env
+
 # testing
 /frontend/coverage
 # misc
-/frontend/.DS_Store
-/frontend/.env.local
-/frontend/.env.development.local
-/frontend/.env.test.local
-/frontend/.env.production.local
+
 
 npm-debug.log*
 yarn-debug.log*
