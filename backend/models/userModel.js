@@ -32,6 +32,8 @@ const userSchema = new mongoose.Schema({
     trim: true,
     minLength: [4, "Password : Minimum Four Character"],
   },
+  
+
 });
 
 const userModel = mongoose.model("user", userSchema);
