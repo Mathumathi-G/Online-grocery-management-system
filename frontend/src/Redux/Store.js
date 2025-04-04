@@ -37,6 +37,7 @@ import {
   getAllAdminReviewsReducer,
   getAllReviewsReducer,
 } from "./Reducers/reviewsReducer";
+import { smartRecommendationReducer } from "./Reducers/productrecomendation";
 
 const rootReducer = combineReducers({
   //User Reducer
@@ -57,6 +58,8 @@ const rootReducer = combineReducers({
   getSingleProduct: getSingleProductReducer,
   deleteProduct: deleteProductReducer,
   updateProduct: updateProductReducer,
+  // product recomendation
+  smartRecommendation: smartRecommendationReducer,
 
   //Category Reducer
   addCategory: addCategoryReducer,

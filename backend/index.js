@@ -8,6 +8,8 @@ const expressFileUpload = require("express-fileupload");
 const express = require("express");
 const app = express();
 const path = require("path");
+const cors = require('cors');
+app.use(cors());
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const connectDB = require("./Config/connection");
@@ -44,6 +46,7 @@ app.listen(process.env.PORT, "localHost", () => {
 app.use("/api/user", userRoutes);
 app.use("/api/product", productRoute);
 app.use("/api/category", categoryRoute);
+app.use("/api/recommendation", require("./routes/smartrecomendation"));
 
 //Access Front End Static Files
 app.use(express.static(path.join(__dirname, "../frontend/build")));

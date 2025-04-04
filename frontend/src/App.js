@@ -31,6 +31,7 @@ import UpdateCategory from "./Pages/Admin/Product/UpdateCategory/UpdateCategory"
 import AdminOrderDetails from "./Pages/Admin/Orders/OrderDetails";
 import UpdateUser from "./Pages/Admin/Users/UpdateUser";
 import ReviewsList from "./Pages/Admin/Reviews/ReviewsList";
+import SmartRecommendations from "./Pages/smartRecomendation/smartRecomendation";
 
 const App = () => {
   const { isAuthUser, user } = useSelector((state) => state.user);
@@ -79,6 +80,7 @@ const App = () => {
 
         <Route path="/reviews/all" element={<AllReviews />} />
         <Route path="/about" element={<About />} />
+        <Route path="/recomendedproducts" element={<SmartRecommendations />} />
 
         {user && user.role === "Admin" ? (
           <>

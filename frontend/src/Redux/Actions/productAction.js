@@ -16,6 +16,12 @@ import {
   UPDATE_PRODUCT_REQUEST,
   UPDATE_PRODUCT_SUCCESS,
 } from "../Constants/productConstants";
+
+import {
+  SMART_RECOMMENDATION_REQUEST,
+  SMART_RECOMMENDATION_SUCCESS,
+  SMART_RECOMMENDATION_FAIL,
+} from "../Constants/smartRecommendationConstants";
 import axios from "axios";
 
 //Add Products
@@ -101,4 +107,25 @@ export const updateProductAction =
 
 export const clearError = () => async (dispatch) => {
   dispatch({ type: CLEAR_ERRORS });
+};
+
+export const getSmartRecommendationAction = () => async (dispatch) => {
+  try {
+    dispatch({ type: SMART_RECOMMENDATION_REQUEST });
+
+    const { data } = await axios.get(`http://localhost:8000/api/recommendation/smart-recommendations`);
+
+    dispatch({
+      type: SMART_RECOMMENDATION_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: SMART_RECOMMENDATION_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
 };
