@@ -10,7 +10,7 @@ import { useRef } from "react";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { RiEmotionHappyLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
-import {logOutUserAction} from "../../Redux/Actions/userAction";
+import { logOutUserAction } from "../../Redux/Actions/userAction";
 import { useEffect } from "react";
 import { removeCartItemAction } from "../../Redux/Actions/cartAction";
 import GithubButton from "../GithubButton/GithubButton";
@@ -110,8 +110,8 @@ const Header = () => {
           <Link to="/recomendedproducts">Smart Recommendations</Link>
           <Link to="/reviews/all">Reviews</Link>
           <Link to="/about">About Us</Link>
-          
-          <Link className="glow-on-hover" onClick={()=>{window.open('',"_blank")}}>Try </Link>
+
+          <Link className="glow-on-hover" onClick={() => { window.open('', "_blank") }}>Try </Link>
 
         </nav>
         <div className="navbar-icons">
@@ -203,6 +203,16 @@ const Header = () => {
             <ul className="After-login-option">
               {user && user.role === "Admin" ? (
                 <Link to="/admin/home">
+                  <li>
+                    <AiOutlineArrowRight /> Dashboard
+                  </li>
+                </Link>
+              ) : (
+                ""
+              )}
+
+              {user && user.role === "agent" ? (
+                <Link to="/agentdashboard">
                   <li>
                     <AiOutlineArrowRight /> Dashboard
                   </li>

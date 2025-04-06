@@ -48,6 +48,10 @@ app.use("/api/user", userRoutes);
 app.use("/api/product", productRoute);
 app.use("/api/category", categoryRoute);
 app.use("/api/recommendation", require("./routes/smartrecomendation"));
+app.use("/api/delivery",require("./routes/agentroutes"))
+
+
+// http://localhost:8000/api/delivery/agent/order/67f29502517f9ad60071a7be
 
 
 //Access Front End Static Files

@@ -33,6 +33,8 @@ import UpdateUser from "./Pages/Admin/Users/UpdateUser";
 import ReviewsList from "./Pages/Admin/Reviews/ReviewsList";
 import SmartRecommendations from "./Pages/smartRecomendation/smartRecomendation";
 import axios from "axios";
+import DeliveryAllOrders from "./Pages/Admin/DeliveryManagement/allOreders";
+import AgentDashboard from "./Pages/agent/agentdash";
 
 const App = () => {
   const { isAuthUser, user } = useSelector((state) => state.user);
@@ -42,17 +44,17 @@ const App = () => {
     dispatch(loadUserAction());
   }, [dispatch]);
 
-   useEffect(()=>{
-    
-    const sendlow= async() =>{
+  useEffect(() => {
 
-     await axios.post("http://localhost:8000/api/product/lowstockalert")
-     
-      }
-    
-      sendlow()
-    
-      },[])
+    const sendlow = async () => {
+
+      await axios.post("http://localhost:8000/api/product/lowstockalert")
+
+    }
+
+    sendlow()
+
+  }, [])
 
   return (
     <BrowserRouter>
@@ -128,6 +130,20 @@ const App = () => {
 
             {/* Reviews Route */}
             <Route path="/admin/view/reviews" element={<ReviewsList />} />
+            {/* DeliveryAllOrders */}
+
+            <Route path="/deliverymanagement" element={<DeliveryAllOrders />} />
+
+
+          </>
+        ) : (
+          ""
+        )}
+
+
+        {user && user.role === "agent" ? (
+          <>
+            <Route path="/agentdashboard" element={<AgentDashboard />} />
           </>
         ) : (
           ""

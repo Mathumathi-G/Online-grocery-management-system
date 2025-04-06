@@ -49,6 +49,7 @@ export const userLoginAction = (userData) => async (dispatch) => {
     dispatch({ type: USER_LOGIN_REQUEST });
     const config = { headers: { "Content-Type": "application/json" } };
     const { data } = await axios.post("/api/user/login", userData);
+   
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: USER_LOGIN_FAIL, error: error.response.data.message });
@@ -59,6 +60,7 @@ export const loadUserAction = () => async (dispatch) => {
   try {
     dispatch({ type: LOAD_LOGIN_USER_REQUEST });
     const { data } = await axios.get("/api/user/getloggeduser");
+    localStorage.setItem("user",JSON.stringify(data.user))
     dispatch({
       type: LOAD_LOGIN_USER_SUCCESS,
       payload: data,

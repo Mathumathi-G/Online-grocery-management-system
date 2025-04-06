@@ -67,6 +67,14 @@ const Sidebar = () => {
               <span>Reviews</span>
             </li>
           </Link>
+          <Link to="/deliverymanagement">
+            <li>
+              <i>
+                <AiOutlineRightCircle />
+              </i>
+              <span>Deliverymanagement</span>
+            </li>
+          </Link>
         </ul>
       </div>
     </>
