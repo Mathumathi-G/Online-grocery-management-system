@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Sidebar from "../Components/Sidebar/Sidebar";
 import Header from "../../../Components/Header/Header";
 import "./AdminProducts.css";
+import axios from "axios";
 
 const AdminProducts = () => {
+
+  useEffect(()=>{
+
+const sendlow= async() =>{
+  axios.post("http://localhost:8000/api/product/lowstockalert")
+  }
+
+  sendlow()
+
+  },[])
+
   return (
     <>
       <Header />

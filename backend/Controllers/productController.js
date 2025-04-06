@@ -2,6 +2,8 @@ const productModel = require("../models/productModel");
 const coludinary = require("cloudinary");
 const sendError = require("../utils/sendError");
 const { filterData } = require("../utils/filterQuery");
+const { sendlowStockEmail, sendEmaillaunchProduct } = require("../utils/email");
+const userModel = require("../models/userModel");
 
 //Add Product
 const addProduct = async (req, res) => {
@@ -28,6 +30,22 @@ const addProduct = async (req, res) => {
         public_id: result.public_id,
         url: result.url,
       });
+
+      console.log(result.url);
+      
+
+    
+      const users=await userModel.find()
+      users.map(async (user) => {
+
+      await   sendEmaillaunchProduct(user.email,user.firstName,newProduct,category,result.url)
+        
+      })
+
+
+
+
+      // sendEmaillaunchProduct
 
       res.status(201).json({
         success: true,
@@ -179,6 +197,33 @@ const getSingleProduct = async (req, res) => {
   }
 };
 
+
+const lowstockcontroller = async (req, res) => {
+  try {
+    const products = await productModel.find();
+    const lowStockProducts = products.filter((product) => product.stocks <= 5);
+
+    if (lowStockProducts.length === 0) {
+      return res.status(200).json({ message: "All stock is available" });
+    }
+
+    const users = await userModel.find();
+
+    // Send email alerts to all users for each low-stock product
+    for (const product of lowStockProducts) {
+      for (const user of users) {
+        await sendlowStockEmail(user.email, product);
+      }
+    }
+
+    return res.status(200).json({ message: "Low stock alert sent to admin and users" });
+  } catch (error) {
+    console.error("Error in lowstockcontroller:", error);
+    return res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+
 module.exports = {
   addProduct,
   deleteProduct,
@@ -186,4 +231,5 @@ module.exports = {
   getAllProduct,
   getRecentProducts,
   getSingleProduct,
+  lowstockcontroller
 };

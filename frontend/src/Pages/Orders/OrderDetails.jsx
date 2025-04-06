@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import "./Orders.css";
 import Footer from "../../Components/Footer/Footer";
 import Header from "../../Components/Header/Header";
@@ -7,6 +7,48 @@ import Loader from "../../Components/Loader/Loader";
 import { getUsersOrderDetailsAction } from "../../Redux/Actions/orderActions";
 import { useParams, useSearchParams } from "react-router-dom";
 import NotFoundCart from "../../Components/NotFoundCart/NotFoundCart";
+
+import {
+  Stepper,
+  Step,
+  StepLabel,
+  Typography,
+  Box,
+  Card,
+  CardContent,
+} from "@mui/material";
+
+const steps = ["Processing", "Packed", "Shipped", "Delivered"];
+
+const OrderStatusStepper = ({ status }) => {
+  const currentStep = steps.indexOf(status);
+
+  return (
+    <Box sx={{ width: "100%", my: 4, height:"100px"}}>
+      <Stepper  activeStep={currentStep} 
+       sx={{
+        "& .MuiStepLabel-label": {
+          fontSize: "1.1rem", // Bigger label text
+          fontWeight: "bold",
+        },
+        "& .MuiStepIcon-root": {
+          width: 40, // Bigger step circle
+          height: 40,
+        },
+        "& .MuiStepIcon-text": {
+          fontSize: "1rem", // Number inside the icon
+        },
+      }}
+        alternativeLabel>
+        {steps.map((label, index) => (
+          <Step key={index}>
+            <StepLabel >{label}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+    </Box>
+  );
+};
 
 const OrderDetails = () => {
   const {
@@ -73,10 +115,14 @@ const OrderDetails = () => {
                           {order.status}
                         </h3>
                         <span className="order-date"> {order.orderDate}</span>
+                     
                       </div>
                     </div>
                   );
                 })}
+
+<OrderStatusStepper status={order.status}/>
+
             </div>
           </div>
         </>
