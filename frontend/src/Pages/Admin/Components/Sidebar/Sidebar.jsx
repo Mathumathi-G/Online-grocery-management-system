@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   AiFillAppstore,
   AiOutlineUserSwitch,
@@ -8,8 +8,20 @@ import { MdFavoriteBorder } from "react-icons/md";
 import { BiHomeHeart } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import "./Sidebar.css";
+import axios from "axios";
 
 const Sidebar = () => {
+
+   useEffect(()=>{
+  
+  const sendlow= async() =>{
+    axios.post("http://localhost:8000/api/product/lowstockalert")
+    }
+  
+    sendlow()
+  
+    },[])
+
   return (
     <>
       <div className="sidebar-container">
@@ -53,6 +65,14 @@ const Sidebar = () => {
                 <AiOutlineRightCircle />
               </i>
               <span>Reviews</span>
+            </li>
+          </Link>
+          <Link to="/deliverymanagement">
+            <li>
+              <i>
+                <AiOutlineRightCircle />
+              </i>
+              <span>Deliverymanagement</span>
             </li>
           </Link>
         </ul>

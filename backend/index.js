@@ -16,6 +16,7 @@ const connectDB = require("./Config/connection");
 const userRoutes = require("./routes/userRoute");
 const productRoute = require("./routes/productRoute");
 const categoryRoute = require("./routes/categoryRoute");
+const { lowstockcontroller } = require("./Controllers/productController");
 
 //Body Parser
 app.use(bodyParser.urlencoded({ limit: "200mb", extended: true }));
@@ -47,9 +48,15 @@ app.use("/api/user", userRoutes);
 app.use("/api/product", productRoute);
 app.use("/api/category", categoryRoute);
 app.use("/api/recommendation", require("./routes/smartrecomendation"));
+app.use("/api/delivery",require("./routes/agentroutes"))
+
+
+// http://localhost:8000/api/delivery/agent/order/67f29502517f9ad60071a7be
+
 
 //Access Front End Static Files
 app.use(express.static(path.join(__dirname, "../frontend/build")));
+
 
 //Access Front End All URL
 app.get("/*", (req, res) => {

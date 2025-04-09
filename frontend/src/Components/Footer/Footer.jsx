@@ -9,6 +9,7 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import CreditCard from "../../../src/Assets/Images/payment.png";
 import { useState } from "react";
+import { Chip } from "@mui/material";
 
 const Footer = () => {
   const [message, setMessage] = useState();
@@ -18,6 +19,7 @@ const Footer = () => {
   return (
     <>
       <footer>
+     
         <section className="footer">
           <div className="box-container">
             <div className="box">

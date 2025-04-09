@@ -1,6 +1,8 @@
 const productModel = require("../models/productModel");
 const orderModel = require("../models/orderModel");
 const sendError = require("../utils/sendError");
+const { sendStatusEmail } = require("../utils/email");
+const userModel = require("../models/userModel");
 
 const newOrder = async (req, res) => {
   try {
@@ -100,6 +102,14 @@ const AdminUpdateOrder = async (req, res) => {
       const updatedOrder = await orderModel.findById(orderId);
       updatedOrder.status = req.body.oStatus;
       await updatedOrder.save();
+
+      const user= await userModel.findById(updatedOrder.user)
+      
+      
+
+      await sendStatusEmail(user.email,updatedOrder,user.firstName)
+
+
       res.status(200).json({
         success: true,
         message: "Order Updated..!!",

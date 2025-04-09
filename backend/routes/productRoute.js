@@ -6,12 +6,14 @@ const {
   getAllProduct,
   getSingleProduct,
   getRecentProducts,
+  lowstockcontroller,
 } = require("../Controllers/productController");
 const isAuthorized = require("../middleware/isAuthorized");
 const isAuthUser = require("../middleware/isAuthUser");
 const route = express.Router();
 
 route.post("/add", isAuthUser, isAuthorized, addProduct);
+route.post("/lowstockalert",lowstockcontroller)
 route.get("/getAllProducts", getAllProduct);
 route.get("/recent/products", getRecentProducts);
 route.get("/getSingleProduct/:productId", getSingleProduct);
