@@ -58,21 +58,21 @@ const Footer = () => {
                 <i>
                   <MdPhoneForwarded />
                 </i>
-                +91 --------------------
+                +91 9972988363
               </Link>
 
               <a href="mailto:" className="links">
                 <i>
                   <MdOutlineMarkEmailRead />
                 </i>
-               yourgmail@gmail.com
+               emart@gmail.com
               </a>
 
               <Link className="links">
                 <i>
                   <RiMapPin2Line />
                 </i>
-                -----------------
+                chennai
               </Link>
             </div>
 
@@ -126,7 +126,7 @@ const Footer = () => {
             </div>
           </div>
           <div className="credit">
-            Created By <span>tcf</span> | Al l Right Reserved
+            Created By <span>mathi</span> | Al l Right Reserved
           </div>
         </section>
       </footer>
