@@ -48,6 +48,51 @@ const userRegister = async (req, res) => {
   }
 };
 
+//User Register
+const AgentRegister = async (req, res) => {
+  try {
+    const { firstName, lastName, email, password, confirmPassword } = req.body;
+    const isUserExit = await userModel.findOne({ email: email });
+    if (isUserExit) {
+      res.status(400).json({
+        success: false,
+        message: ["Oops! Email Already Exit..!!"],
+      });
+    } else {
+      if (password == confirmPassword) {
+        const NewUser = await userModel.create({
+          firstName,
+          lastName,
+          email,
+          password,
+          role:"agent"
+        });
+        const salt = await bcrypt.genSalt(10);
+        NewUser.password = await bcrypt.hash(NewUser.password, salt);
+        await NewUser.save();
+        res.status(201).json({
+          success: true,
+          message: "User Register SuccessFully..!!",
+          NewUser,
+        });
+      } else {
+        sendError(res, 400, ["Passwords Field Mismatch"]);
+      }
+    }
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      const errors = {};
+      Object.keys(error.errors).map((key) => {
+        errors[key] = error.errors[key].message;
+      });
+      sendError(res, 400, Object.values(errors));
+    } else {
+      sendError(res, 400, ["Somethings Went Wrong..!!"]);
+    }
+  }
+};
+
+
 //User Login
 const userLogin = async (req, res) => {
   try {
@@ -287,4 +332,5 @@ module.exports = {
   adminGetAllUsers,
   AdminDeleteUser,
   adminUpdateUser,
+  AgentRegister
 };

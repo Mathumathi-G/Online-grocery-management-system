@@ -35,6 +35,7 @@ import SmartRecommendations from "./Pages/smartRecomendation/smartRecomendation"
 import axios from "axios";
 import DeliveryAllOrders from "./Pages/Admin/DeliveryManagement/allOreders";
 import AgentDashboard from "./Pages/agent/agentdash";
+import AgentSignUp from "./Pages/SignUp/AgentSignUp";
 
 const App = () => {
   const { isAuthUser, user } = useSelector((state) => state.user);
@@ -61,6 +62,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/Signup" element={!isAuthUser ? <SignUp /> : <Home />} />
+        <Route path="/AgentSignUp" element={!isAuthUser ? <AgentSignUp /> : <Home />} />
+        
         <Route path="/Login" element={!isAuthUser ? <Login /> : <Home />} />
         <Route
           path="/RestPassword"

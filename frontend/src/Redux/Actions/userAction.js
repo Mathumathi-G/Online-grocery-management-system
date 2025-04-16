@@ -44,6 +44,16 @@ export const userRegisterAction = (userData) => async (dispatch) => {
   }
 };
 
+export const AgentRegisterAction = (userData) => async (dispatch) => {
+  try {
+    dispatch({ type: USER_REGISTER_REQUEST });
+    const { data } = await axios.post("/api/user/agent/register", userData);
+    dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: USER_REGISTER_FAIL, error: error.response.data.message });
+  }
+};
+
 export const userLoginAction = (userData) => async (dispatch) => {
   try {
     dispatch({ type: USER_LOGIN_REQUEST });

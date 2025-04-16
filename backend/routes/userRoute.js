@@ -24,12 +24,15 @@ const {
   adminGetAllUsers,
   AdminDeleteUser,
   adminUpdateUser,
+  AgentRegister,
 } = require("../Controllers/userController");
 const isAuthorized = require("../middleware/isAuthorized");
 const isAuthUser = require("../middleware/isAuthUser");
 
 //Public Route
 route.post("/register", userRegister);
+route.post("/agent/register",AgentRegister );
+
 route.post("/login", userLogin);
 route.post("/send-reset-password-email", sendUserPasswordResetEmail);
 route.post("/reset-password/:id/:token", userPasswordReset);

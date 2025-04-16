@@ -45,6 +45,7 @@ app.listen(process.env.PORT, "localHost", () => {
 
 //Load Route
 app.use("/api/user", userRoutes);
+// http://localhost:8000/api/user/agent/register
 app.use("/api/product", productRoute);
 app.use("/api/category", categoryRoute);
 app.use("/api/recommendation", require("./routes/smartrecomendation"));
