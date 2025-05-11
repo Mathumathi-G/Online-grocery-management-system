@@ -16,26 +16,55 @@ const assignOrdersToAgent = async (req, res) => {
       });
     }
 
+    // Find all assignments to check for already assigned orderIds
+    const allAssignments = await orderAssignModel.find({});
+    const alreadyAssignedOrderIds = new Set();
+
+    allAssignments.forEach(assign => {
+      if (assign.agentId.toString() !== agentId.toString()) {
+        assign.orderId.forEach(id => alreadyAssignedOrderIds.add(id.toString()));
+      }
+    });
+
+    // Filter out already assigned orderIds
+    const newOrderIds = [];
+    const skippedOrderIds = [];
+
+    orderId.forEach(id => {
+      if (alreadyAssignedOrderIds.has(id.toString())) {
+        skippedOrderIds.push(id);
+      } else {
+        newOrderIds.push(id);
+      }
+    });
+
+    if (newOrderIds.length === 0) {
+      return res.status(200).json({
+        message: "All selected orders are already assigned to other agents.",
+        skippedOrderIds,
+      });
+    }
+
     // Check if an assignment already exists for this agent
     let assignment = await orderAssignModel.findOne({ agentId });
 
     if (assignment) {
-      // Avoid duplicate orderIds using Set
       const existingOrderIds = new Set(assignment.orderId.map(id => id.toString()));
-      orderId.forEach(id => existingOrderIds.add(id.toString()));
+      newOrderIds.forEach(id => existingOrderIds.add(id.toString()));
       assignment.orderId = Array.from(existingOrderIds);
     } else {
-      // Create a new assignment if none exists
-      assignment = new orderAssignModel({ agentId, orderId });
+      assignment = new orderAssignModel({ agentId, orderId: newOrderIds });
     }
 
-    // Save the assignment (new or updated)
     await assignment.save();
 
     res.status(201).json({
       message: "Orders assigned successfully!",
+      assignedOrderIds: newOrderIds,
+      skippedOrderIds,
       assignment,
     });
+
   } catch (error) {
     console.error("Order assignment error:", error);
     res.status(500).json({
@@ -44,6 +73,7 @@ const assignOrdersToAgent = async (req, res) => {
     });
   }
 };
+
 
 
 // Optional: Fetch assignments

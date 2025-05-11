@@ -53,6 +53,7 @@ const Checkout = () => {
   const [validationError, setValidationError] = useState("");
   const [shippingData, setShippingData] = useState({});
   const [goToConfirm, setGoToConfirm] = useState(false);
+  
 
   const HandelCheckoutSubmit = (e) => {
     e.preventDefault();

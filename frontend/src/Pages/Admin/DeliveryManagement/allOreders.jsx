@@ -26,6 +26,8 @@ import axios from "axios";
 
 const OrderList = () => {
   const dispatch = useDispatch();
+  const [message, setmessage] = useState();
+
   const [selectedAgents, setSelectedAgents] = useState({});
   const [successAssign, setSuccessAssign] = useState(false);
 
@@ -42,24 +44,36 @@ const OrderList = () => {
     dispatch(getAllOrdersAdminAction());
     dispatch(getAllUsersAdminAction());
   }, [dispatch]);
+const assignHandler = async (orderId) => {
+  const agentId = selectedAgents[orderId];
 
-  const assignHandler = async (orderId) => {
-    const agentId = selectedAgents[orderId];
-    if (agentId) {
+  if (!agentId) {
+    setSuccessAssign(false);
+    return;
+  }
 
-        console.log(orderId, agentId);
+  try {
+    console.log("Assigning order:", orderId, "to agent:", agentId);
 
-        
+    const { data } = await axios.post("http://localhost:8000/api/delivery/assign-orders", {
+      orderId,
+      agentId,
+    });
 
-      await  axios.post("http://localhost:8000/api/delivery/assign-orders",{orderId, agentId})
-        
-    //   dispatch(assignDeliveryAction(orderId, agentId));
-      setSuccessAssign(true);
+    console.log("Assignment response:", data);
+    setSuccessAssign(true);
+    setmessage(data.message)
+    //Agent Assigned Successfully!
+    
+    // Optional: dispatch Redux action if needed
+    // dispatch(assignDeliveryAction(orderId, agentId));
 
-    }else{
-      setSuccessAssign(false);
-    }
-  };
+  } catch (error) {
+    console.error("Assignment failed:", error.response?.data || error.message);
+    setSuccessAssign(false);
+  }
+};
+
 
   return (
     <>
@@ -171,7 +185,7 @@ const OrderList = () => {
         onClose={() => setSuccessAssign(false)}
       >
         <Alert severity="success" variant="filled" onClose={() => setSuccessAssign(false)}>
-          Agent Assigned Successfully!
+          {message}
         </Alert>
       </Snackbar>
     </>
