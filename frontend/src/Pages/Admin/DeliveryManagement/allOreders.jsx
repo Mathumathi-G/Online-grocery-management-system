@@ -61,8 +61,8 @@ const assignHandler = async (orderId) => {
     });
 
     console.log("Assignment response:", data);
-    setSuccessAssign(true);
     setmessage(data.message)
+    setSuccessAssign(true);
     //Agent Assigned Successfully!
     
     // Optional: dispatch Redux action if needed

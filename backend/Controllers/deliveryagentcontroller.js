@@ -4,29 +4,39 @@ const assignOrdersToAgent = async (req, res) => {
   try {
     let { agentId, orderId } = req.body;
 
-    // Normalize orderId to an array if it's a single string
+    // Normalize input
+    if (!agentId) {
+      return res.status(400).json({ message: "agentId is required." });
+    }
+
+    if (!orderId || (typeof orderId !== "string" && !Array.isArray(orderId))) {
+      return res.status(400).json({ message: "orderId must be a string or an array." });
+    }
+
     if (typeof orderId === "string") {
       orderId = [orderId];
     }
 
-    // Input validation
-    if (!agentId || !Array.isArray(orderId) || orderId.length === 0) {
-      return res.status(400).json({
-        message: "agentId and a non-empty orderId array are required.",
-      });
+    if (orderId.length === 0) {
+      return res.status(400).json({ message: "orderId array cannot be empty." });
     }
 
-    // Find all assignments to check for already assigned orderIds
+    const inputAgentId = agentId.toString();
+
+    // Fetch all assignments
     const allAssignments = await orderAssignModel.find({});
     const alreadyAssignedOrderIds = new Set();
 
     allAssignments.forEach(assign => {
-      if (assign.agentId.toString() !== agentId.toString()) {
-        assign.orderId.forEach(id => alreadyAssignedOrderIds.add(id.toString()));
-      }
+      const assignedAgentId = assign.agentId.toString();
+      const ids = Array.isArray(assign.orderId) ? assign.orderId : [assign.orderId];
+
+      ids.forEach(id => {
+        alreadyAssignedOrderIds.add(id.toString());
+      });
     });
 
-    // Filter out already assigned orderIds
+    // Filter out already assigned orders
     const newOrderIds = [];
     const skippedOrderIds = [];
 
@@ -40,18 +50,18 @@ const assignOrdersToAgent = async (req, res) => {
 
     if (newOrderIds.length === 0) {
       return res.status(200).json({
-        message: "All selected orders are already assigned to other agents.",
+        message: "All selected orders are already assigned to agents.",
         skippedOrderIds,
       });
     }
 
-    // Check if an assignment already exists for this agent
+    // Check if the agent already has an assignment
     let assignment = await orderAssignModel.findOne({ agentId });
 
     if (assignment) {
-      const existingOrderIds = new Set(assignment.orderId.map(id => id.toString()));
-      newOrderIds.forEach(id => existingOrderIds.add(id.toString()));
-      assignment.orderId = Array.from(existingOrderIds);
+      const existingIds = new Set(assignment.orderId.map(id => id.toString()));
+      newOrderIds.forEach(id => existingIds.add(id.toString()));
+      assignment.orderId = Array.from(existingIds);
     } else {
       assignment = new orderAssignModel({ agentId, orderId: newOrderIds });
     }
@@ -73,6 +83,7 @@ const assignOrdersToAgent = async (req, res) => {
     });
   }
 };
+
 
 
 
