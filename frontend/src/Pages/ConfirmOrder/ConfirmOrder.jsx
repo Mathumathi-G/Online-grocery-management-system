@@ -31,6 +31,9 @@ const ConfirmOrder = ({ shippingInfo }) => {
   const [orderLoading, setOrderLoading] = useState(false);
   const [isOrderPlace, setIsOrderPlace] = useState(false);
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
+  const [paymentModeDialog, setPaymentModeDialog] = useState(false);
+const [selectedPaymentMode, setSelectedPaymentMode] = useState(""); // "cod" or "online"
+
 
   const [cardDetails, setCardDetails] = useState({
     cardNumber: "",
@@ -78,25 +81,29 @@ const ConfirmOrder = ({ shippingInfo }) => {
     });
   };
 
-  const handlePaymentSubmit = async () => {
-    if (!validateCard()) return;
+const handlePaymentSubmit = async (mode = "online") => {
+  if (mode === "online" && !validateCard()) return;
 
-    try {
-      setOrderLoading(true);
-      setOpenPaymentModal(false);
-      const { data } = await axios.post(`/api/user/new/order`, {
-        cartItems,
-        shippingInfo,
-        userId: user._id,
-        total: subTotal,
-      });
-      setIsOrderPlace(true);
-    } catch (error) {
-      alert(error?.response?.data?.message || "Order failed");
-    } finally {
-      setOrderLoading(false);
-    }
-  };
+  try {
+    setOrderLoading(true);
+    setOpenPaymentModal(false);
+
+    const { data } = await axios.post(`/api/user/new/order`, {
+      cartItems,
+      shippingInfo,
+      userId: user._id,
+      total: subTotal,
+      paymentMode: mode,
+    });
+
+    setIsOrderPlace(true);
+  } catch (error) {
+    alert(error?.response?.data?.message || "Order failed");
+  } finally {
+    setOrderLoading(false);
+  }
+};
+
 
   return (
     <>
@@ -171,7 +178,7 @@ const ConfirmOrder = ({ shippingInfo }) => {
                     <div className="confirm-order-btn">
                       <button
                         className="cOrder"
-                        onClick={() => setOpenPaymentModal(true)}
+                        onClick={() => setPaymentModeDialog(true)}
                       >
                         Confirm Order
                       </button>
@@ -179,6 +186,7 @@ const ConfirmOrder = ({ shippingInfo }) => {
                         <button>Cancel Order</button>
                       </Link>
                     </div>
+
                   </div>
                 </div>
               ) : (
@@ -259,6 +267,38 @@ const ConfirmOrder = ({ shippingInfo }) => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/*  */}
+
+      <Dialog open={paymentModeDialog} onClose={() => setPaymentModeDialog(false)}>
+        <DialogTitle>Select Payment Mode</DialogTitle>
+        <DialogContent>
+          <Button
+            variant="outlined"
+            fullWidth
+            onClick={() => {
+              setSelectedPaymentMode("cod");
+              setPaymentModeDialog(false);
+              handlePaymentSubmit("cod");
+            }}
+            style={{ marginBottom: "10px" }}
+          >
+            Cash On Delivery
+          </Button>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={() => {
+              setSelectedPaymentMode("online");
+              setPaymentModeDialog(false);
+              setOpenPaymentModal(true); // Open card modal
+            }}
+          >
+            Online Payment
+          </Button>
+        </DialogContent>
+      </Dialog>
+
     </>
   );
 };

@@ -38,6 +38,7 @@ const OrderList = () => {
                   <th>Items</th>
                   <th>Amount</th>
                   <th>Status</th>
+                  <th>paymentMode</th>
                   <th>Date</th>
                   <th colSpan={2}>Actions</th>
                 </thead>
@@ -52,7 +53,7 @@ const OrderList = () => {
                             </Link>{" "}
                           </td>
                           <td>
-                            {order.user.firstName + " " + order.user.lastName}
+                            {order.user?.firstName + " " + order.user?.lastName}
                           </td>
                           <td>{order.orderItems.length}</td>
                           <td> ₹ {order.total}</td>
@@ -67,6 +68,7 @@ const OrderList = () => {
                           >
                             {order.status}
                           </td>
+                          <td>{order.paymentMode}</td>
                           <td>{order.orderDate}</td>
                           <td>
                             <Link to={`/admin/update/order/${order._id}`}>

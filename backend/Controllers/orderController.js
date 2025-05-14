@@ -6,11 +6,14 @@ const userModel = require("../models/userModel");
 
 const newOrder = async (req, res) => {
   try {
-    const { cartItems, shippingInfo, userId, total } = req.body;
+    const { cartItems, shippingInfo, userId, total,paymentMode } = req.body;
+    console.log(req.body);
+    
     const newOrder = await orderModel.create({
       user: userId,
       shippingInfo: shippingInfo,
       total: total,
+      paymentMode
     });
     newOrder.orderItems = cartItems;
     await updateStock(cartItems);
