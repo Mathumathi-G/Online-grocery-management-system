@@ -44,6 +44,13 @@ export const userRegisterAction = (userData) => async (dispatch) => {
   }
 };
 
+
+// post create json 
+// put  upadate  json => bulk 
+// delete   params 
+// patch update  only one data 
+//  get 
+
 export const AgentRegisterAction = (userData) => async (dispatch) => {
   try {
     dispatch({ type: USER_REGISTER_REQUEST });

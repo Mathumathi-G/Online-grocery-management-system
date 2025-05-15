@@ -82,6 +82,10 @@ const [selectedPaymentMode, setSelectedPaymentMode] = useState(""); // "cod" or 
   };
 
 const handlePaymentSubmit = async (mode = "online") => {
+  console.log();
+  
+  console.log();
+  
   if (mode === "online" && !validateCard()) return;
 
   try {
@@ -262,7 +266,7 @@ const handlePaymentSubmit = async (mode = "online") => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenPaymentModal(false)}>Cancel</Button>
-          <Button onClick={handlePaymentSubmit} variant="contained" color="primary">
+          <Button onClick={()=>handlePaymentSubmit("online")} variant="contained" color="primary">
             Pay & Place Order
           </Button>
         </DialogActions>

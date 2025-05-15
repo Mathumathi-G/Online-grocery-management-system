@@ -49,6 +49,8 @@ const SignUp = () => {
         password,
         confirmPassword,
       };
+      console.log(userData);
+      
       dispatch(userRegisterAction(userData));
     }
   };
